@@ -1,0 +1,318 @@
+---
+title: "Trabalho Final Probabilidade e Esatística"
+subtitle: "Pedro Malandrin Klesse - 790746 & Vitor Caligaris Figueira - 790743"
+output: pdf_document
+---
+
+# A fim de aplicar os conhecimentos adquiridos no curso de Probabilidade e Estatística, foi feita uma análise sobre o arquivo BasePE, o qual aborda várias informações sobre residências da região de Ames, Iowa, USA. O objetivo é interpretar os dados a fim de achar alguma relação entre quatro variáveis escolhidas na base de dados BasePE e a variável SalePrice.
+
+
+# Inicialização da biblioteca readr e carregamento com resumo da base de dados BasePE:
+
+```{r BasePE}
+#Biblioteca para incluir funções a serem utilizadas no trabalho
+library(readr)
+
+#Leitura da Base de Dados
+BasePE <- read_csv("BasePE.csv")
+
+#Dimensão da Base de Dados
+dim(BasePE)
+
+#Resumo da Base de dados
+summary(BasePE)
+```
+
+
+
+# Primeiramente, foi feita uma análise univariada sobre as quatro variáveis escolhidas entre as dezessete contidas na base de dados:
+
+
+```{r Analise Univariada Fireplaces, echo=FALSE}
+#Mediana
+cat("Mediana",median(BasePE$Fireplaces),"\n")
+
+#Media
+cat("Média: ",mean(BasePE$Fireplaces),"\n")
+
+#Intervalo
+cat("Intervalo:",max(BasePE$Fireplaces)-min(BasePE$Fireplaces),"\n")
+
+#Distância interquartílica
+cat("Distância interquartílica:",IQR(BasePE$Fireplaces),"\n")
+
+#Desvio Padrão
+cat("Desvio Padrão:",sd(BasePE$Fireplaces),"\n")
+
+#Tabela de Frequência
+cat("Tabela de Frequência:",table(BasePE$Fireplaces),"\n")
+
+#Diagrama de caixas
+boxplot(BasePE$Fireplaces,xlab="Fireplaces",main="Diagrama de Caixas da variável Fireplaces",col="darkblue")
+
+#Histograma
+hist(BasePE$Fireplaces,xlab="Fireplaces",main="Histograma da Variável Fireplaces",col="darkblue")
+
+#Curva de Densidade
+plot(density(BasePE$Fireplaces),xlab="Fireplaces",main="Curva de Densidade da Variável Fireplaces",col="darkblue")
+
+```
+
+
+# A partir das análises dos gráficos da variável Fireplaces, foi possível notar que a grande maioria das casas não possuem ou possuem apenas uma lareira. Esta conclusão surgiu através da análise tanto dos gráficos quanto da tabela de frequência, a qual demonstra exatamente o número de casas para cada número de lareiras.
+
+
+```{r Analise Univariada GarageArea, echo=FALSE}
+#Mediana
+cat("Mediana",median(BasePE$GarageArea),"\n")
+
+#Media
+cat("Média: ",mean(BasePE$GarageArea),"\n")
+
+#Intervalo
+cat("Intervalo:",max(BasePE$GarageArea)-min(BasePE$GarageArea),"\n")
+
+#Distância interquartílica
+cat("Distância interquartílica:",IQR(BasePE$GarageArea),"\n")
+
+#Desvio Padrão
+cat("Desvio Padrão:",sd(BasePE$GarageArea),"\n")
+
+#Tabela de Frequência
+cat("Tabela de Frequência:",table(BasePE$GarageArea),"\n")
+
+#Diagrama de caixas
+boxplot(BasePE$GarageArea,xlab="GarageArea",main="Diagrama de Caixas da variável GarageArea",col="darkgreen")
+
+#Histograma
+hist(BasePE$GarageArea,xlab="GarageArea",main="Histograma da Variável GarageArea",col="darkgreen")
+
+#Curva de Densidade
+plot(density(BasePE$GarageArea),xlab="GarageArea",main="Curva de Densidade da Variável GarageArea",col="darkgreen")
+
+```
+
+
+# No caso da variável GarageArea, foi possível notar através dos gráficos e da tabela de frequência que a maioria das residências possuem uma garagem de área entre 400 e 600 u.a.
+
+
+```{r Analise Univariada OverallCond, echo=FALSE}
+#Mediana
+cat("Mediana",median(BasePE$OverallCond),"\n")
+
+#Media
+cat("Média: ",mean(BasePE$OverallCond),"\n")
+
+#Intervalo
+cat("Intervalo:",max(BasePE$OverallCond)-min(BasePE$OverallCond),"\n")
+
+#Distância interquartílica
+cat("Distância interquartílica:",IQR(BasePE$OverallCond),"\n")
+
+#Desvio Padrão
+cat("Desvio Padrão:",sd(BasePE$OverallCond),"\n")
+
+#Tabela de Frequência
+cat("Tabela de Frequência:",table(BasePE$OverallCond),"\n")
+
+#Diagrama de caixas
+boxplot(BasePE$OverallCond,xlab="OverallCond",main="Diagrama de Caixas da variável OverallCond",col="darkorange")
+
+#Histograma
+hist(BasePE$OverallCond,xlab="OverallCond",main="Histograma da Variável OverallCond",col="darkorange")
+
+#Curva de Densidade
+plot(density(BasePE$OverallCond),xlab="OverallCond",main="Curva de Densidade da Variável OverallCond",col="darkorange")
+
+```
+
+
+# Para a variável OverAllCond, temos que o índice de qualidade geral, a partir dos gráficos, tem alta frequência para o índice 5. Portanto, percebe-se que a qualidade das casas, em média, tente ao índice médio.
+
+
+```{r Analise Univariada YearBuilt, echo=FALSE}
+#Mediana
+cat("Mediana",median(BasePE$YearBuilt),"\n")
+
+#Media
+cat("Média: ",mean(BasePE$YearBuilt),"\n")
+
+#Intervalo
+cat("Intervalo:",max(BasePE$YearBuilt)-min(BasePE$YearBuilt),"\n")
+
+#Distância interquartílica
+cat("Distância interquartílica:",IQR(BasePE$YearBuilt),"\n")
+
+#Desvio Padrão
+cat("Desvio Padrão:",sd(BasePE$YearBuilt),"\n")
+
+#Tabela de Frequência
+cat("Tabela de Frequência:",table(BasePE$YearBuilt),"\n")
+
+#Diagrama de caixas
+boxplot(BasePE$YearBuilt,xlab="YearBuilt",main="Diagrama de Caixas da variável YearBuilt",col="darkred")
+
+#Histograma
+hist(BasePE$YearBuilt,xlab="YearBuilt",main="Histograma da Variável YearBuilt",col="darkred")
+
+#Curva de Densidade
+plot(density(BasePE$YearBuilt),xlab="YearBuilt",main="Curva de Densidade da Variável YearBuilt",col="darkred")
+
+```
+
+
+
+# Por fim, para a análise univariada da variável YearBuilt, é possível concluir que a maioria das casas foi construída a partir de 1950, e houve um alto crescimento de construções a partir do ano 2000.
+
+
+```{r Tópico 3 - Análise Bivariada, echo=FALSE}
+library(ggplot2)
+
+ggplot(BasePE, aes(x=Fireplaces, y=SalePrice) ) +
+  geom_point(colour = "darkblue")
+
+ggplot(BasePE, aes(x=GarageArea, y=SalePrice) ) +
+  geom_point(colour = "darkgreen")
+
+ggplot(BasePE, aes(x=OverallCond, y=SalePrice) ) +
+  geom_point(colour = "darkorange")
+
+ggplot(BasePE, aes(x=YearBuilt, y=SalePrice) ) +
+  geom_point(colour = "darkred")
+```
+
+
+# A partir do gráfico Fireplaces X SalePrice, vemos que, ao aumentar o número de lareiras de 0 até 2 o preço das casas é maior, porém as casas com 3 lareiras demonstram uma queda no preço em relação as outras e, além disso, menor procura, pois a frequência de casas com 3 lareiras é muito baixa.
+
+# No caso do gráfico GarageArea X SalePrice, podemos notar que até garagens de 1000 u.a. o preço aumenta, e posteriormente há um leve declínio. Portanto, é possível supor que o preço da casa aumenta com o tamanho da garagem. Como a procura por casas de mais de 1000 u.a. é baixa, o preço acaba por abaixar.
+
+# Para o gráfico OverAllCond X SalePrice, temos que a as casas com maior preço possuem em média índice de condição geral do imóvel de valor 5. É perceptível também que as casas com pior condição de estado tem menor preço.
+
+# Por fim, no gráfico YearBuilt X SalePrice, percebe-se que casas mais novas tendem a ter preços maiores. As casas com maiores preços foram construídas depois de 1980.
+
+
+# Regressões lineares com resíduos:
+
+```{r Tópico 4 - Regressão Linear, warning=FALSE}
+
+#Variável Fireplaces
+regFireplacesVar <- lm(formula = Fireplaces ~ SalePrice, data = BasePE)
+BasePE$predicao <- predict(regFireplacesVar)
+BasePE$residuos <- residuals(regFireplacesVar)
+
+ggplot(BasePE, aes(x=Fireplaces, y=SalePrice) ) +
+  geom_point(colour = "darkblue") + 
+  geom_smooth(formula = y ~ x,method = lm,se=TRUE, color="yellow") +
+  geom_segment(aes(xend = Fireplaces, yend = predicao), alpha = .2) +
+  geom_point(aes(color = abs(residuos), size = abs(residuos))) +
+  scale_color_continuous(low = "darkblue", high = "lightblue") +
+  guides(color = FALSE, size = FALSE) +
+  geom_point(aes(y = predicao), shape = 1) +
+  ggtitle("Regressão Linear Fireplaces")
+
+#Variável GarageArea
+regGarageAreaVar <- lm(formula = GarageArea ~ SalePrice, data = BasePE)
+BasePE$predicao <- predict(regGarageAreaVar)
+BasePE$residuos <- residuals(regGarageAreaVar)
+
+ggplot(BasePE, aes(x=GarageArea, y=SalePrice) ) +
+  geom_point(colour = "darkgreen") + 
+  geom_smooth(formula = y ~ x, method = lm,se=TRUE, color="yellow")+
+  geom_segment(aes(xend = GarageArea, yend = predicao), alpha = .2) +
+  geom_point(aes(color = abs(residuos), size = abs(residuos))) +
+  scale_color_continuous(low = "darkgreen", high = "lightgreen") +
+  guides(color = FALSE, size = FALSE) +
+  geom_point(aes(y = predicao), shape = 1) +
+  ggtitle("Regressão Linear GarageArea")
+
+#Variável OverallCond
+regOverallCondVar <- lm(formula = OverallCond ~ SalePrice, data = BasePE)
+BasePE$predicao <- predict(regOverallCondVar)
+BasePE$residuos <- residuals(regOverallCondVar)
+
+ggplot(BasePE, aes(x=OverallCond, y=SalePrice) ) +
+  geom_point(colour = "darkorange") + 
+  geom_smooth(formula = y ~ x, method = lm,se=TRUE, color="yellow")+
+  geom_segment(aes(xend = OverallCond, yend = predicao), alpha = .2) +
+  geom_point(aes(color = abs(residuos), size = abs(residuos))) +
+  scale_color_continuous(low = "darkorange", high = "orange") +
+  guides(color = FALSE, size = FALSE) +
+  geom_point(aes(y = predicao), shape = 1) +
+  ggtitle("Regressão Linear OverAllCond")
+
+#Variável YearBuilt
+regYearBuiltVar <- lm(formula = YearBuilt ~ SalePrice, data = BasePE)
+BasePE$predicao <- predict(regYearBuiltVar)
+BasePE$residuos <- residuals(regYearBuiltVar)
+
+ggplot(BasePE, aes(x=YearBuilt, y=SalePrice) ) +
+  geom_point(colour = "darkred") + 
+  geom_smooth(formula = y ~ x, method = lm,se=TRUE, color="yellow")+
+  geom_segment(aes(xend = YearBuilt, yend = predicao), alpha = .2) +
+  geom_point(aes(color = abs(residuos), size = abs(residuos))) +
+  scale_color_continuous(low = "darkred", high = "red") +
+  guides(color = FALSE, size = FALSE) +
+  geom_point(aes(y = predicao), shape = 1) +
+  ggtitle("Regressão Linear YearBuilt")
+
+```
+
+
+# Acima foram feitas as regressões lineares para cada uma das quatro variáveis escolhidas em relação a variável SalePrice. Os gráficos mostram a regressão.
+# Com as regressões lienares feitas, foi possível chegar numa conclusão melhor que a anterior feita atráves das análises bivariadas.
+# Vemos que, para um aumento no número de lareiras, há uma tendência para a casa ter um preço maior.
+# No caso da área da garagem, quanto maior for esta, maior o preço da casa.
+# Em relação ao índice de condição do estado geral do imóvel, temos que a tendência é diminuir este com o aumento do preço da casa. Porém, vale ressaltar que as casas com condição mediana são as mais caras.
+# Por fim, para o ano de construção, as casas construídas mais recentemente são mais caras.
+
+
+
+# A fim de ver a normalidade dos dados, foi realizado o teste de Shapiro-Wilk para cada um dos resíduos das regressões lineares calculadas anteriormente. Tomando como hipótese nula a normalidade dos dados, está será descartada ou não descartada a partir do p-value encontrado no teste feito a seguir:
+```{R Testes de Shapiro-Wilk, echo=FALSE}
+#Teste de Shapiro-Wilk da variável Fireplaces em relação a SalePrice
+shapiro.test(residuals(regFireplacesVar))
+
+#Teste de Shapiro-Wilk da variável GarageArea em relação a SalePrice
+shapiro.test(residuals(regGarageAreaVar))
+
+#Teste de Shapiro-Wilk da variável OverallCondVar em relação a SalePrice
+shapiro.test(residuals(regOverallCondVar))
+
+#Teste de Shapiro-Wilk da variável YearBuilt em relação a SalePrice
+shapiro.test(residuals(regYearBuiltVar))
+
+```
+
+
+# Para as quatro variáveis, o valor encontrado para o p-value atráves do teste de Shapiro-Wilk foi muito próximo de zero, ou seja, a hipótese nula antes estabelecida agora foi descartada, portanto os dados não possuem normalidade.
+
+
+# Por fim, foram calculados os intervalos de confiança para cada uma das regressões lineares:
+```{R Intervalos de Confiança}
+
+#Variável Fireplaces
+confint(regFireplacesVar)
+confint(regGarageAreaVar)
+confint(regOverallCondVar)
+confint(regYearBuiltVar)
+
+
+```
+
+
+# Concluí-se que a partir das variáveis escolhidas e através de métodos adquiridos e aprendidos através do curso, foi possível ver a relação destas com a variável SalePrice e interpretar os dados a fim de concluir ou rejeitar hipóteses. Através da análise das regressões lineares é possível identificar uma tendência da relação entre duas variáveis, mas é importante ressaltar que, para ter certeza de que as variáveis tem relação, exige conhecimento do assunto em questão.
+
+
+
+
+
+## Bibliografias utilizadas para a conclusão do trabalho:
+
+
+* Slides e Aulas de Probabilidade e Estatística - Professor Afrânio Vieira
+* Análise Univarida: https://www.statology.org/univariate-analysis-in-r/
+* Análise Bivariada: https://www.statology.org/bivariate-analysis-in-r/
+* Gráficos com R: https://vanderleidebastiani.github.io/tutoriais/Graficos_com_R.html
+* Teste de Shapiro-Wilk: https://psicometriaonline.com.br/o-que-e-o-teste-de-shapiro-wilk/
+* Intervalo de confiança: https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/confint
+

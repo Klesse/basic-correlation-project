@@ -1,6 +1,5 @@
 ---
 title: "Trabalho Final Probabilidade e Esatística"
-subtitle: "Pedro Malandrin Klesse - 790746 & Vitor Caligaris Figueira - 790743"
 output: pdf_document
 ---
 
